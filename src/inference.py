@@ -28,4 +28,13 @@ class CreditScorePredictor:
 
         df = pd.DataFrame([data])
 
-        return self.model.predict(df)[0]
+        try:
+            return self.model.predict(df)[0]
+
+        except Exception as e:
+
+            import streamlit as st
+
+            st.error(str(e))
+
+            raise
