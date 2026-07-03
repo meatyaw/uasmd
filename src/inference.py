@@ -1,43 +1,29 @@
 import os
 import joblib
-import boto3
+import gdown
 import pandas as pd
-import botocore
-import streamlit as st
 
 
 class CreditScorePredictor:
 
     def __init__(self):
 
-        self.bucket = "credit-score-md"
-        self.key = "best_model.pkl"
-        self.local_model = "best_model.pkl"
+        self.file_id = "MASUKKAN_FILE_ID_DISINI"
 
-        self.s3 = boto3.client(
-            "s3",
-            aws_access_key_id=st.secrets["AWS_ACCESS_KEY_ID"],
-            aws_secret_access_key=st.secrets["AWS_SECRET_ACCESS_KEY"],
-            region_name=st.secrets["AWS_DEFAULT_REGION"]
-        )
+        self.model_path = "best_model.pkl"
 
-        if not os.path.exists(self.local_model):
-            self.download_model()
+        if not os.path.exists(self.model_path):
 
-        self.model = joblib.load(self.local_model)
+            url = f"https://drive.google.com/uc?id={self.file_id}"
 
-    def download_model(self):
-        try:
-            self.s3.download_file(
-                self.bucket,
-                self.key,
-                self.local_model
+            gdown.download(
+                url,
+                self.model_path,
+                quiet=False
             )
-        except botocore.exceptions.ClientError as e:
 
-            st.error(e.response["Error"])
+        self.model = joblib.load(self.model_path)
 
-            raise
     def predict(self, data):
 
         df = pd.DataFrame([data])
