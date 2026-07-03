@@ -1,17 +1,42 @@
+import os
+import boto3
 import joblib
-import pandas as pd
 
 
 class CreditScorePredictor:
 
-    def __init__(self, model_path):
+    def __init__(self):
 
-        self.model = joblib.load(model_path)
+        self.bucket = "credit-score-md"
 
-    def predict(self, data: dict):
+        self.key = "best_model.pkl"
+
+        self.local_model = "best_model.pkl"
+
+        if not os.path.exists(self.local_model):
+
+            self.download_model()
+
+        self.model = joblib.load(self.local_model)
+
+    def download_model(self):
+
+        s3 = boto3.client("s3")
+
+        s3.download_file(
+
+            self.bucket,
+
+            self.key,
+
+            self.local_model
+
+        )
+
+    def predict(self, data):
+
+        import pandas as pd
 
         df = pd.DataFrame([data])
 
-        prediction = self.model.predict(df)[0]
-
-        return prediction
+        return self.model.predict(df)[0]
