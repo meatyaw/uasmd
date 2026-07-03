@@ -8,7 +8,7 @@ class CreditScorePredictor:
 
     def __init__(self):
 
-        self.file_id = "MASUKKAN_FILE_ID_DISINI"
+        self.file_id = "1Lhut8VfsJ6d2JYzJU__1kOy5Hquj0Xr3"
 
         self.model_path = "best_model.pkl"
 
