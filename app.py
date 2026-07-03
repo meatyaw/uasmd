@@ -133,7 +133,11 @@ payment_behaviour = st.selectbox(
 monthly_balance = st.number_input(
     "Monthly Balance"
 )
-
+credit_history_months = st.number_input(
+    "Credit History (Months)",
+    min_value=0,
+    value=24
+)
 if st.button("Predict"):
 
     data = {
@@ -158,6 +162,7 @@ if st.button("Predict"):
         "Total_EMI_per_month": total_emi,
         "Amount_invested_monthly": amount_invested,
         "Payment_Behaviour": payment_behaviour,
+        "Credit_History_Age_Months": credit_history_months,
         "Monthly_Balance": monthly_balance
 
     }
