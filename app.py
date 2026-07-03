@@ -3,7 +3,7 @@ import streamlit as st
 from src.inference import CreditScorePredictor
 
 
-predictor = CreditScorePredictor("best_model.pkl")
+predictor = CreditScorePredictor()
 
 st.set_page_config(
     page_title="Credit Score Prediction",
