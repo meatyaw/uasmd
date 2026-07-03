@@ -2,6 +2,7 @@ import os
 import joblib
 import boto3
 import pandas as pd
+import botocore
 import streamlit as st
 
 
@@ -26,13 +27,17 @@ class CreditScorePredictor:
         self.model = joblib.load(self.local_model)
 
     def download_model(self):
+        try:
+            self.s3.download_file(
+                self.bucket,
+                self.key,
+                self.local_model
+            )
+        except botocore.exceptions.ClientError as e:
 
-        self.s3.download_file(
-            self.bucket,
-            self.key,
-            self.local_model
-        )
+            st.error(e.response["Error"])
 
+            raise
     def predict(self, data):
 
         df = pd.DataFrame([data])
